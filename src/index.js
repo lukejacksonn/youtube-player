@@ -1,6 +1,4 @@
-import _ from 'lodash';
 import Sister from 'sister';
-import Bluebird from 'bluebird';
 import loadYouTubeIframeAPI from './loadYouTubeIframeAPI';
 import YouTubePlayer from './YouTubePlayer';
 
@@ -39,13 +37,13 @@ export default (elementId, options = {}) => {
         throw new Error('Event handlers cannot be overwritten.');
     }
 
-    if (_.isString(elementId) && !document.getElementById(elementId)) {
+    if (typeof elementId === 'string' && !document.getElementById(elementId)) {
         throw new Error('Element "' + elementId + '" does not exist.');
     }
 
     options.events = YouTubePlayer.proxyEvents(emitter);
 
-    playerAPIReady = new Bluebird((resolve) => {
+    playerAPIReady = new Promise((resolve) => {
         youtubeIframeAPI
             .then((YT) => {
                 return new YT.Player(elementId, options);
